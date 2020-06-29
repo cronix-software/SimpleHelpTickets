@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.UUID;
 
 import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
@@ -84,8 +85,8 @@ public class taketicket implements CommandExecutor {
 
       String id = rs.getString("id");
       //String owner = rs.getString("owner");
-      String UUID = rs.getString("UUID");
-      String owner = Bukkit.getOfflinePlayer(UUID).getName();
+      String uuID = rs.getString("UUID");
+      String owner = Bukkit.getOfflinePlayer(UUID.fromString(uuID)).getName();
       if (plugin.getConfig().getBoolean("MultiWorld") == true) {
         worldName = rs.getString("world");
       }
@@ -139,7 +140,7 @@ public class taketicket implements CommandExecutor {
       }
       // NOTIFY ADMIN AND USERS
       String admin = player.getName();
-      Player target = plugin.getServer().getPlayer(UUID);
+      Player target = plugin.getServer().getPlayer(UUID.fromString(uuID));
       // ASSIGN ADMIN
       stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
       // NOTIFY -OTHER- ADMINS 
